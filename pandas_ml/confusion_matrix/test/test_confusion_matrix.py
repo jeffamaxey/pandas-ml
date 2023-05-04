@@ -146,7 +146,7 @@ class TestConfusionMatrix(tm.TestCase):
         print("Confusion matrix:\n%s" % cm)
         select = ['cat', 'dog']
 
-        print("Binarize with %s" % select)
+        print(f"Binarize with {select}")
         binary_cm = cm.binarize(select)
 
         print("Binary confusion matrix:\n%s" % binary_cm)
@@ -170,8 +170,8 @@ class TestConfusionMatrix(tm.TestCase):
     def test_pandas_confusion_cm_stats_integers(self):
         y_true = [600, 200, 200, 200, 200, 200, 200, 200, 500, 500, 500, 200, 200, 200, 200, 200, 200, 200, 200, 200]
         y_pred = [100, 200, 200, 100, 100, 200, 200, 200, 100, 200, 500, 100, 100, 100, 100, 100, 100, 100, 500, 200]
-        print("y_true: %s" % y_true)
-        print("y_pred: %s" % y_pred)
+        print(f"y_true: {y_true}")
+        print(f"y_pred: {y_pred}")
         cm = ConfusionMatrix(y_true, y_pred)
         assert isinstance(cm, pdml.confusion_matrix.LabeledConfusionMatrix)
 
@@ -181,8 +181,8 @@ class TestConfusionMatrix(tm.TestCase):
     def test_pandas_confusion_cm_stats_animals(self):
         y_true = ['rabbit', 'cat', 'rabbit', 'rabbit', 'cat', 'dog', 'dog', 'rabbit', 'rabbit', 'cat', 'dog', 'rabbit']
         y_pred = ['cat', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'cat', 'rabbit', 'rabbit']
-        print("y_true: %s" % y_true)
-        print("y_pred: %s" % y_pred)
+        print(f"y_true: {y_true}")
+        print(f"y_pred: {y_pred}")
 
         cm = ConfusionMatrix(y_true, y_pred)
         assert isinstance(cm, pdml.confusion_matrix.LabeledConfusionMatrix)
@@ -201,8 +201,8 @@ class TestConfusionMatrix(tm.TestCase):
     def test_pandas_confusion_get(self):
         y_true = ['rabbit', 'cat', 'rabbit', 'rabbit', 'cat', 'dog', 'dog', 'rabbit', 'rabbit', 'cat', 'dog', 'rabbit']
         y_pred = ['cat', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'cat', 'rabbit', 'rabbit']
-        print("y_true: %s" % y_true)
-        print("y_pred: %s" % y_pred)
+        print(f"y_true: {y_true}")
+        print(f"y_pred: {y_pred}")
 
         cm = ConfusionMatrix(y_true, y_pred)
         assert isinstance(cm, pdml.confusion_matrix.LabeledConfusionMatrix)
@@ -216,8 +216,8 @@ class TestConfusionMatrix(tm.TestCase):
     def test_pandas_confusion_max_min(self):
         y_true = ['rabbit', 'cat', 'rabbit', 'rabbit', 'cat', 'dog', 'dog', 'rabbit', 'rabbit', 'cat', 'dog', 'rabbit']
         y_pred = ['cat', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'dog', 'cat', 'rabbit', 'cat', 'rabbit', 'rabbit']
-        print("y_true: %s" % y_true)
-        print("y_pred: %s" % y_pred)
+        print(f"y_true: {y_true}")
+        print(f"y_pred: {y_pred}")
 
         cm = ConfusionMatrix(y_true, y_pred)
         assert isinstance(cm, pdml.confusion_matrix.LabeledConfusionMatrix)

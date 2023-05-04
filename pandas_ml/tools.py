@@ -16,5 +16,4 @@ def _get_version(package):
 def info():
     packages = ['sklearn', 'statsmodels', 'seaborn', 'xgboost']
     versions = [_get_version(p) for p in packages]
-    df = pd.DataFrame({'Installed': versions}, index=packages)
-    return df
+    return pd.DataFrame({'Installed': versions}, index=packages)

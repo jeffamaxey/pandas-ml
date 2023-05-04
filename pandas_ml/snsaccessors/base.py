@@ -90,9 +90,8 @@ class SeabornMethods(_AccessorMethods):
         """
         data = self._maybe_target_series(data, key='data')
 
-        if data2 is not None:
-            if not pd.api.types.is_list_like(data2):
-                data2 = self._df[data2]
+        if data2 is not None and not pd.api.types.is_list_like(data2):
+            data2 = self._df[data2]
         return self._module.kdeplot(data, data2=data2, *args, **kwargs)
 
     # Regression plots

@@ -109,24 +109,6 @@ class TestSeabornDistribution(SeabornCase):
     def test_distplot(self):
         return          # ToDo: only fails on Travis
 
-        df = self.iris
-
-        ax = df.sns.distplot()
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), '.target')
-        tm.close()
-
-        # pass scalar (str)
-        ax = df.sns.distplot(df.columns[1])
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), df.columns[1])
-        tm.close()
-
-        # pass Series
-        ax = df.sns.distplot(df[df.columns[2]])
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), df.columns[2])
-
     def test_dist_error(self):
         df = pdml.ModelFrame(np.random.randn(100, 5), columns=list('abcde'))
 
@@ -338,28 +320,6 @@ class TestSeabornCategorical(SeabornCase):
         tm.close()
 
         return      # ToDo: only fails on Travis
-
-        ax = df.sns.countplot(df.columns[1])
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), df.columns[1])
-        self.assertEqual(ax.get_ylabel(), 'count')
-        tm.close()
-
-        ax = df.sns.countplot(x=df.columns[1])
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), df.columns[1])
-        self.assertEqual(ax.get_ylabel(), 'count')
-        tm.close()
-
-        ax = df.sns.countplot(y=df.columns[1])
-        self.assertIsInstance(ax, matplotlib.axes.Axes)
-        self.assertEqual(ax.get_xlabel(), 'count')
-        self.assertEqual(ax.get_ylabel(), df.columns[1])
-        tm.close()
-
-        with tm.assertRaises(TypeError):
-            # can't pass both x and y
-            df.sns.countplot(x=df.columns[1], y=df.columns[2])
 
     # Matrix
 

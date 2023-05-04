@@ -20,8 +20,7 @@ class SVMMethods(_AccessorMethods):
         func = self._module.l1_min_c
         data = self._data
         target = self._target
-        l1_min_c = func(data.values, y=target.values, *args, **kwargs)
-        return l1_min_c
+        return func(data.values, y=target.values, *args, **kwargs)
 
     @property
     def libsvm(self):

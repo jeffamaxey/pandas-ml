@@ -22,9 +22,7 @@ class ModelSeries(ModelTransformer, pd.Series):
 
         # needed for preprocessing
         data = self.values.reshape(-1, 1)
-        result = method(data, *args, **kwargs)
-
-        return result
+        return method(data, *args, **kwargs)
 
     def _wrap_transform(self, transformed, columns=None):
         """
@@ -43,8 +41,7 @@ class ModelSeries(ModelTransformer, pd.Series):
               dict(funcname='transform', returned='returned : transformed result'))
     def transform(self, estimator, *args, **kwargs):
         try:
-            transformed = super(ModelSeries, self).transform(estimator, *args, **kwargs)
-            return transformed
+            return super(ModelSeries, self).transform(estimator, *args, **kwargs)
         except ImportError:
             # raise patsy error
             raise
@@ -70,12 +67,7 @@ class ModelSeries(ModelTransformer, pd.Series):
         # ported from pandas 0.16
         from pandas_ml.core.frame import ModelFrame
 
-        if name is None:
-            df = ModelFrame(self)
-        else:
-            df = ModelFrame({name: self})
-
-        return df
+        return ModelFrame(self) if name is None else ModelFrame({name: self})
 
     @Appender(pd.core.generic.NDFrame.groupby.__doc__)
     def groupby(self, by=None, axis=0, level=None, as_index=True, sort=True,

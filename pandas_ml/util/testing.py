@@ -26,7 +26,7 @@ class TestCase(object):
         return np.random.RandomState(1234)
 
     def format(self, val):
-        return '{} (type: {})'.format(val, type(val))
+        return f'{val} (type: {type(val)})'
 
     def format_values(self, left, right):
         fmt = """Input vaues are different:

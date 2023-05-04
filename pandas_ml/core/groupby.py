@@ -17,7 +17,7 @@ def groupby(obj, by, **kwds):
     elif isinstance(obj, ModelFrame):
         klass = ModelFrameGroupBy
     else:  # pragma: no cover
-        raise TypeError('invalid type: %s' % type(obj))
+        raise TypeError(f'invalid type: {type(obj)}')
 
     return klass(obj, by, **kwds)
 
@@ -57,10 +57,7 @@ class ModelFrameGroupBy(pd.core.groupby.DataFrameGroupBy, ModelPredictor):
             method = getattr(group, method_name)
             results[name] = method(e)
         self.estimator = estimator
-        if method_name == 'fit':
-            return estimator
-        else:
-            return results
+        return estimator if method_name == 'fit' else results
 
     def _wrap_transform(self, transformed):
         return self._wrap_results(transformed)

@@ -180,26 +180,17 @@ class ConfusionMatrixAbstract(object):
         return(self.sum())
 
     def y_true(self, func=None):
-        if func is None:
-            return(self._y_true)
-        else:
-            return(self._y_true.map(func))
+        return self._y_true if func is None else (self._y_true.map(func))
 
     def y_pred(self, func=None):
-        if func is None:
-            return(self._y_pred)
-        else:
-            return(self._y_pred.map(func))
+        return self._y_pred if func is None else (self._y_pred.map(func))
 
     @property
     def title(self):
         """
         Returns title
         """
-        if self.is_binary:
-            return("Binary confusion matrix")
-        else:
-            return("Confusion matrix")
+        return "Binary confusion matrix" if self.is_binary else "Confusion matrix"
 
     def plot(self, normalized=False, backend='matplotlib',
              ax=None, max_colors=10, **kwargs):
@@ -243,14 +234,6 @@ class ConfusionMatrixAbstract(object):
             if N_max > max_colors:
                 # Continuous colorbar
                 plt.colorbar()
-            else:
-                # Discrete colorbar
-                pass
-                # ax2 = fig.add_axes([0.93, 0.1, 0.03, 0.8])
-                # bounds = np.arange(N_min, N_max + 2, 1)
-                # norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-                # cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm, spacing='proportional', ticks=bounds, boundaries=bounds, format='%1i')
-
             return ax
 
         elif backend == 'seaborn':
@@ -276,19 +259,18 @@ class ConfusionMatrixAbstract(object):
         y_pred_bin = self.y_pred().map(lambda x: x in select)
 
         from pandas_ml.confusion_matrix.bcm import BinaryConfusionMatrix
-        binary_cm = BinaryConfusionMatrix(y_true_bin, y_pred_bin)
-
-        return(binary_cm)
+        return BinaryConfusionMatrix(y_true_bin, y_pred_bin)
 
     def enlarge(self, select):
         """
         Enlarges confusion matrix with new classes
         It should add empty rows and columns
         """
-        if not isinstance(select, collections.Iterable):
-            idx_new_cls = pd.Index([select])
-        else:
-            idx_new_cls = pd.Index(select)
+        idx_new_cls = (
+            pd.Index(select)
+            if isinstance(select, collections.Iterable)
+            else pd.Index([select])
+        )
         new_idx = self._df_confusion.index | idx_new_cls
         new_idx.name = self.true_name
         new_col = self._df_confusion.columns | idx_new_cls
@@ -410,7 +392,7 @@ class ConfusionMatrixAbstract(object):
             name = self._name_from_dict(key, d_name)
             if i != 0:
                 s = s + line_feed_stats
-            s = s + "%s:%s%s" % (name, line_feed_key_val, val)
+            s = s + f"{name}:{line_feed_key_val}{val}"
         return(s)
 
     def _str_stats(self, lst_stats=None):
@@ -433,10 +415,12 @@ class ConfusionMatrixAbstract(object):
             ("class", str(stats['class'])),
         ])
 
-        s = self._str_dict(
-            d_stats_str, line_feed_key_val='\n\n',
-            line_feed_stats='\n\n\n', d_name=d_stats_name)
-        return(s)
+        return self._str_dict(
+            d_stats_str,
+            line_feed_key_val='\n\n',
+            line_feed_stats='\n\n\n',
+            d_name=d_stats_name,
+        )
 
     def print_stats(self, lst_stats=None):
         """
@@ -506,5 +490,4 @@ class ConfusionMatrixAbstract(object):
             v = getattr(binary_cm, stat)
             print(v)
             s_values[cls] = v
-        value = (s_values * self.true).sum() / self.population
-        return(value)
+        return (s_values * self.true).sum() / self.population

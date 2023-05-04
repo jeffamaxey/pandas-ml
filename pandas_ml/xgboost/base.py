@@ -5,8 +5,7 @@ from pandas_ml.core.accessor import _AccessorMethods
 
 def _to_dmatrix(data):
     import xgboost as xgb
-    dm = xgb.DMatrix(data.data, label=data.target)
-    return dm
+    return xgb.DMatrix(data.data, label=data.target)
 
 
 class XGBoostMethods(_AccessorMethods):

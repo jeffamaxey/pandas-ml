@@ -115,7 +115,7 @@ class TestSplitter(tm.TestCase):
                               'B': [1, 2, 3, 4, 5, 6, 7, 8]},
                              index='a b c d e f g h'.split(' '))
         kf = df.model_selection.KFold(3, random_state=self.random_state)
-        folded = [f for f in df.model_selection.split(kf)]
+        folded = list(df.model_selection.split(kf))
         self.assertEqual(len(folded), 3)
         tm.assert_frame_equal(folded[0][0], df.iloc[3:, :])
         tm.assert_frame_equal(folded[0][1], df.iloc[:3, :])
@@ -124,7 +124,7 @@ class TestSplitter(tm.TestCase):
         tm.assert_frame_equal(folded[2][0], df.iloc[:6, :])
         tm.assert_frame_equal(folded[2][1], df.iloc[6:, :])
 
-        folded = [f for f in df.model_selection.split(kf, reset_index=True)]
+        folded = list(df.model_selection.split(kf, reset_index=True))
         self.assertEqual(len(folded), 3)
         tm.assert_frame_equal(folded[0][0],
                               df.iloc[3:, :].reset_index(drop=True))
@@ -222,7 +222,7 @@ class TestSplitter(tm.TestCase):
         digits = datasets.load_digits()
 
         df = pdml.ModelFrame(digits)
-        clf = svm.SVC(kernel=str('linear'), C=1)
+        clf = svm.SVC(kernel='linear', C=1)
         result = df.model_selection.cross_val_score(clf, cv=5)
         expected = ms.cross_val_score(clf, X=digits.data, y=digits.target, cv=5)
         self.assert_numpy_array_almost_equal(result, expected)
@@ -232,7 +232,7 @@ class TestSplitter(tm.TestCase):
         iris = datasets.load_iris()
 
         df = pdml.ModelFrame(iris)
-        clf = svm.SVC(kernel=str('linear'), C=1)
+        clf = svm.SVC(kernel='linear', C=1)
         result = df.model_selection.permutation_test_score(clf, cv=5)
         expected = ms.permutation_test_score(clf, iris.data, y=iris.target, cv=5)
 
@@ -255,8 +255,8 @@ class TestSplitter(tm.TestCase):
         sf2 = ms.StratifiedShuffleSplit(random_state=self.random_state)
 
         # consume generator
-        ind1 = [x for x in sf1.split(df.data.values, df.target.values)]
-        ind2 = [x for x in sf2.split(iris.data, iris.target)]
+        ind1 = list(sf1.split(df.data.values, df.target.values))
+        ind2 = list(sf2.split(iris.data, iris.target))
 
         for i1, i2 in zip(ind1, ind2):
             self.assertIsInstance(i1, tuple)

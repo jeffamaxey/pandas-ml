@@ -220,8 +220,8 @@ class TestClassificationMetrics2Classes(TestClassificationMetrics):
         import sklearn.svm as svm
         # 2 class
         iris = datasets.load_iris()
-        self.data = iris.data[0:100]
-        self.target = [1 if t == 1 else -1 for t in iris.target[0:100]]
+        self.data = iris.data[:100]
+        self.target = [1 if t == 1 else -1 for t in iris.target[:100]]
         self.df = pdml.ModelFrame(self.data, target=self.target)
 
         estimator1 = self.df.svm.SVC(probability=True, random_state=self.random_state)

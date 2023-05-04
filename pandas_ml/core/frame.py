@@ -138,10 +138,6 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
             if is_list_like(target):
                 target = _maybe_convert_target(data, target)
 
-        else:
-            # no conversion required
-            pass
-
         if isinstance(target, pd.Series) and target.name is None:
             target = pd.Series(target, name=self._TARGET_NAME)
 
@@ -214,10 +210,7 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
         -------
         data : ``ModelFrame``
         """
-        if self.has_data():
-            return self.loc[:, self._data_columns]
-        else:
-            return None
+        return self.loc[:, self._data_columns] if self.has_data() else None
 
     @data.setter
     def data(self, data):
@@ -231,9 +224,7 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
                 raise ValueError(msg.format(self.__class__.__name__))
         elif isinstance(data, pd.Series):
             data = data.to_frame()
-        elif isinstance(data, pd.DataFrame):
-            pass
-        else:
+        elif not isinstance(data, pd.DataFrame):
             msg = 'data must be ModelFrame, ModelSeries, DataFrame or Series, {0} passed'
             raise TypeError(msg.format(data.__class__.__name__))
 
@@ -243,10 +234,9 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
             if len(self.target_name.intersection(data.columns)) > 0:
                 msg = "Passed data has the same column name as the target '{0}'"
                 raise ValueError(msg.format(self.target_name))
-        else:
-            if self.target_name in data.columns:
-                msg = "Passed data has the same column name as the target '{0}'"
-                raise ValueError(msg.format(self.target_name))
+        elif self.target_name in data.columns:
+            msg = "Passed data has the same column name as the target '{0}'"
+            raise ValueError(msg.format(self.target_name))
 
         if self.has_target():
             data, _ = self._concat_target(data, self.target)
@@ -306,10 +296,7 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
         -------
         target : ``ModelSeries``
         """
-        if self.has_target():
-            return self.loc[:, self.target_name]
-        else:
-            return None
+        return self.loc[:, self.target_name] if self.has_target() else None
 
     @target.setter
     def target(self, target):
@@ -440,7 +427,7 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
                                        columns=self.data.columns)
             return result
 
-        if sampled_X.ndim == 3 or sampled_X.ndim == 1:
+        if sampled_X.ndim in [3, 1]:
             # ensemble
             # ndim=3 for EasyEnsemble
             # ndim=1 for BalanceCascade
@@ -540,8 +527,7 @@ class ModelFrame(ModelPredictor, pd.DataFrame):
     @Appender(_shared_docs['estimator_methods'] %
               dict(funcname='score', returned='returned : score'))
     def score(self, estimator, *args, **kwargs):
-        score = self._call(estimator, 'score', *args, **kwargs)
-        return score
+        return self._call(estimator, 'score', *args, **kwargs)
 
     # accessors
 

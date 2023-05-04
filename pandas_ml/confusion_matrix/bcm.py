@@ -49,10 +49,7 @@ len=%d because y_true.unique()=%s y_pred.unique()=%s" \
         direction being a boolean
         True for positive class
         False for negative class"""
-        if direction:
-            return(self.pos_class)
-        else:
-            return(self.neg_class)
+        return self.pos_class if direction else self.neg_class
 
     @property
     def pos_class(self):
@@ -71,31 +68,26 @@ len=%d because y_true.unique()=%s y_pred.unique()=%s" \
         return(self.classes[0])
 
     def dict_class(self, reversed=False):
-        if not reversed:
-            d = {
+        return (
+            {False: self.classes[0], True: self.classes[1]}
+            if reversed
+            else {
                 self.classes[0]: False,
                 self.classes[1]: True,
             }
-        else:
-            d = {
-                False: self.classes[0],
-                True: self.classes[1]
-            }
-        return(d)
+        )
 
     def y_true(self, to_bool=False):
         if not to_bool:
             return(self._y_true)
-        else:
-            d = self.dict_class()
-            return(self._y_true.map(d))
+        d = self.dict_class()
+        return(self._y_true.map(d))
 
     def y_pred(self, to_bool=False):
         if not to_bool:
             return(self._y_pred)
-        else:
-            d = self.dict_class()
-            return(self._y_pred.map(d))
+        d = self.dict_class()
+        return(self._y_pred.map(d))
 
     @property
     def P(self):

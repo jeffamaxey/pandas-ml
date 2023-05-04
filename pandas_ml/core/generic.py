@@ -8,14 +8,14 @@ import pandas_ml.misc as misc
 from pandas_ml.compat import Appender
 
 
-_shared_docs = dict()
-
-_shared_docs['skaccessor'] = """
+_shared_docs = {
+    'skaccessor': """
     Property to access ``sklearn.%(module)s``. See :mod:`pandas_ml.skaccessors.%(module)s`
-    """
-_shared_docs['skaccessor_nolink'] = """
+    """,
+    'skaccessor_nolink': """
     Property to access ``sklearn.%(module)s``
-    """
+    """,
+}
 
 
 class ModelTransformer(object):

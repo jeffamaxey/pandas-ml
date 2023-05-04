@@ -30,8 +30,7 @@ class GaussianProcessMethods(_AccessorMethods):
     @classmethod
     def _predict(cls, df, estimator, *args, **kwargs):
         data = df.data.values
-        eval_MSE = kwargs.get('eval_MSE', False)
-        if eval_MSE:
+        if eval_MSE := kwargs.get('eval_MSE', False):
             y, MSE = estimator.predict(data, *args, **kwargs)
             if y.ndim == 1:
                 y = df._constructor_sliced(y, index=df.index)

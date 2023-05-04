@@ -18,9 +18,7 @@ class DecompositionMethods(_AccessorMethods):
         """
         func = self._module.fastica
         data = self._data
-        return_x_mean = kwargs.get('return_X_mean', False)
-
-        if return_x_mean:
+        if return_x_mean := kwargs.get('return_X_mean', False):
             K, W, S, X_mean = func(data.values, *args, **kwargs)
             K = self._constructor(K, index=data.columns)
             W = self._constructor(W)
@@ -54,8 +52,7 @@ class DecompositionMethods(_AccessorMethods):
         """
         func = self._module.dict_learning_online
         data = self._data
-        return_code = kwargs.get('return_code', True)
-        if return_code:
+        if return_code := kwargs.get('return_code', True):
             code, dictionary = func(data.values, *args, **kwargs)
             code = self._constructor(code, index=data.index)
             dictionary = self._constructor(dictionary, columns=data.columns)

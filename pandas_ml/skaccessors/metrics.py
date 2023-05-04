@@ -98,9 +98,7 @@ class MetricsMethods(_AccessorMethods):
         - ``y_pred_decision``: ``ModelFrame.decision``
         """
         func = self._module.hinge_loss
-        result = func(self._target.values,
-                      self._df.decision.values, *args, **kwargs)
-        return result
+        return func(self._target.values, self._df.decision.values, *args, **kwargs)
 
     def log_loss(self, *args, **kwargs):
         """
@@ -110,9 +108,7 @@ class MetricsMethods(_AccessorMethods):
         - ``y_pred``: ``ModelFrame.proba``
         """
         func = self._module.log_loss
-        result = func(self._target.values,
-                      self._df.proba.values, *args, **kwargs)
-        return result
+        return func(self._target.values, self._df.proba.values, *args, **kwargs)
 
     def precision_recall_curve(self, *args, **kwargs):
         """
@@ -155,10 +151,10 @@ class MetricsMethods(_AccessorMethods):
         func = self._module.precision_recall_fscore_support
         p, r, f, s = func(self._target.values, self._predicted.values,
                           *args, **kwargs)
-        result = self._constructor({'precision': p, 'recall': r,
-                                    'f1-score': f, 'support': s},
-                                   columns=['precision', 'recall', 'f1-score', 'support'])
-        return result
+        return self._constructor(
+            {'precision': p, 'recall': r, 'f1-score': f, 'support': s},
+            columns=['precision', 'recall', 'f1-score', 'support'],
+        )
 
     def precision_score(self, *args, **kwargs):
         """
@@ -213,9 +209,7 @@ class MetricsMethods(_AccessorMethods):
         - ``labels``: ``ModelFrame.predicted``
         """
         func = self._module.silhouette_score
-        result = func(self._data.values, self._predicted.values,
-                      *args, **kwargs)
-        return result
+        return func(self._data.values, self._predicted.values, *args, **kwargs)
 
     def silhouette_samples(self, *args, **kwargs):
         """

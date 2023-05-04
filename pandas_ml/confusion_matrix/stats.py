@@ -49,7 +49,7 @@ def class_agreement(df):
     m = min(len(ni), len(nj))
 
     p0 = np.float64(np.diag(df.iloc[0:m, 0:m]).sum()) / n
-    pc = np.float64((ni.iloc[0:m] * nj.iloc[0:m]).sum()) / (n**2)
+    pc = np.float64((ni.iloc[:m] * nj.iloc[:m]).sum()) / n**2
 
     n2 = choose(n, 2)
 
@@ -78,10 +78,11 @@ def prop_test(df):
     x = np.diag(df).sum()
     n = df.sum().sum()
     p = (df.sum(axis=0) / df.sum().sum()).max()
-    d = {
+    return {
         "statistic": x,  # number of successes
         "parameter": n,  # number of trials
         "null.value": p,  # probability of success
-        "p.value": binom.sf(x - 1, n, p),  # see https://en.wikipedia.org/wiki/Binomial_test
+        "p.value": binom.sf(
+            x - 1, n, p
+        ),  # see https://en.wikipedia.org/wiki/Binomial_test
     }
-    return(d)

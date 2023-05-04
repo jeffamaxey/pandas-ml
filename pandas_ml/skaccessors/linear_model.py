@@ -23,14 +23,11 @@ class LinearModelMethods(_AccessorMethods):
     def _enet_path_wraps(self, func, *args, **kwargs):
         data = self._data
         target = self._target
-        return_models = kwargs.get('return_models', False)
-        if return_models:
-            models = func(data.values, y=target.values, *args, **kwargs)
-            return models
-        else:
-            alphas, coefs, dual_gaps = func(data.values, y=target.values, *args, **kwargs)
-            coefs = self._constructor(coefs, index=data.columns)
-            return alphas, coefs, dual_gaps
+        if return_models := kwargs.get('return_models', False):
+            return func(data.values, y=target.values, *args, **kwargs)
+        alphas, coefs, dual_gaps = func(data.values, y=target.values, *args, **kwargs)
+        coefs = self._constructor(coefs, index=data.columns)
+        return alphas, coefs, dual_gaps
 
     def lars_path(self, *args, **kwargs):
         """
@@ -83,8 +80,7 @@ class LinearModelMethods(_AccessorMethods):
         target = self._target.values
         gram = data.T.dot(data)
         Xy = data.T.dot(target)
-        coef = func(gram, Xy, *args, **kwargs)
-        return coef
+        return func(gram, Xy, *args, **kwargs)
 
 
 _lm_methods = ['orthogonal_mp']

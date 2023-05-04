@@ -46,20 +46,3 @@ class TestIsotonic(tm.TestCase):
     def test_IsotonicRegression(self):
         # disable at this moment
         return
-        """
-        data = np.abs(np.random.randn(100))
-        data = data.cumsum()
-        df = pdml.ModelFrame(np.arange(len(data)), target=data)
-
-        mod1 = df.isotonic.IsotonicRegression()
-        mod2 = isotonic.IsotonicRegression()
-
-        # df.fit(mod1)
-        # mod2.fit(iris.data)
-
-        # result = df.predict(mod1)
-        # expected = mod2.predict(iris.data)
-
-        # self.assertIsInstance(result, pdml.ModelSeries)
-        # self.assert_numpy_array_almost_equal(result.values, expected)
-        """

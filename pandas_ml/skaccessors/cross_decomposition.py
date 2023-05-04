@@ -18,12 +18,11 @@ class CrossDecompositionMethods(_AccessorMethods):
         data = df.data.values
         if df.has_target():
             target = df.target.values
-            result = estimator.fit(data, Y=target, *args, **kwargs)
+            return estimator.fit(data, Y=target, *args, **kwargs)
         else:
             # not try to pass target if it doesn't exists
             # to catch ValueError from estimator
-            result = estimator.fit(data, *args, **kwargs)
-        return result
+            return estimator.fit(data, *args, **kwargs)
 
     @classmethod
     def _transform(cls, df, estimator, *args, **kwargs):
